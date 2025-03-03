@@ -1,25 +1,24 @@
 pipeline {
     agent any
+    environment {
+        DB_HOST = '19.168.12.1'
+        USERNAME = 'admin'
+        PASSWORD = 'admin123'
+    }
 
     stages {
-
+       
+        stage('setup') {
+            steps {
+                sh 'pip install -r requirements.txt'
+                echo "The database host is: ${DB_HOST}"
+            }
+        }
         stage('Test') {
             steps {
-                sh "pytest"
-                
+                sh "paytest"
+                echo "The DB username is: ${USERNAME} and password is: ${PASSWORD}"
             }
-        }    
-        stage('Deployment') {
-            input {
-                message "Do you want to proceed further?"
-                ok "Yes"
-            }
-            steps {
-                echo "Running Deployment"
-                
-            }
-        } 
-        
-            
+        }
     }
 }
